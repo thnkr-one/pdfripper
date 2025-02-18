@@ -6,7 +6,7 @@ import (
 	"log"
 	"runtime"
 
-	"github.com/thnkr-one/pdfripper"
+	"github.com/thnkr-one/pdfripper/pdfripper"
 )
 
 func main() {
@@ -24,7 +24,7 @@ func main() {
 		*procCount = runtime.NumCPU()
 	}
 
-	extractor, err := pdfextractor.NewExtractor(*inputFile, *outputDir, *procCount)
+	extractor, err := pdfripper.NewExtractor(*inputFile, *outputDir, *procCount)
 	if err != nil {
 		log.Fatalf("Error initializing extractor: %v", err)
 	}

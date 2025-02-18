@@ -91,16 +91,15 @@ func (e *Extractor) ExtractPages() error {
 		workerCount = totalPages
 	}
 
-	// Launch workers.
+	// Launch worker goroutines.
 	for i := 0; i < workerCount; i++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
 			for page := range pagesChan {
 				outputFile := filepath.Join(e.OutputDir, fmt.Sprintf("page_%d.txt", page))
-				// Run pdftotext for one page:
-				//   -f <page> sets the first page,
-				//   -l <page> sets the last page.
+				// Use pdftotext to extract one page:
+				// -f <page> sets the first page and -l <page> sets the last page.
 				cmd := exec.Command("pdftotext", "-f", strconv.Itoa(page), "-l", strconv.Itoa(page), e.PDFFile, outputFile)
 				if err := cmd.Run(); err != nil {
 					mu.Lock()
